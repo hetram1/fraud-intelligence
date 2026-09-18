@@ -21,7 +21,7 @@
       "description": "Insurance policy.",
       "fields": {
         "policy_id": "string",
-        "customer_id": "string",
+        "customer_id": "string|null",
         "policy_type": "string|null",
         "policy_start_date": "date|null",
         "policy_end_date": "date|null",
@@ -31,8 +31,7 @@
         "status": "string|null"
       },
       "required": [
-        "policy_id",
-        "customer_id"
+        "policy_id"
       ]
     },
     "claim": {
@@ -40,7 +39,7 @@
       "fields": {
         "claim_id": "string",
         "policy_id": "string",
-        "customer_id": "string",
+        "customer_id": "string|null",
         "claim_date": "date|null",
         "incident_date": "date|null",
         "claim_type": "string|null",
@@ -52,8 +51,7 @@
       },
       "required": [
         "claim_id",
-        "policy_id",
-        "customer_id"
+        "policy_id"
       ]
     },
     "provider": {

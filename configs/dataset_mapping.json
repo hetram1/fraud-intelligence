@@ -10,14 +10,8 @@
   },
   "entities": {
     "customer": {
-      "status": "derived",
-      "fields": {
-        "customer_id": {
-          "source": "policy_id",
-          "transformation": "deterministic derived identifier using prefix CUST_",
-          "note": "The source dataset does not contain an explicit customer identifier."
-        }
-      }
+      "status": "unavailable",
+      "reason": "The source dataset does not contain an explicit customer identifier. policy_id identifies a policy, not necessarily a unique customer."
     },
     "policy": {
       "status": "direct",
@@ -46,8 +40,8 @@
           "transformation": null
         },
         "customer_id": {
-          "source": "policy_id",
-          "transformation": "CUST_<policy_id>"
+          "source": "not available",
+          "transformation": null
         }
       }
     },
@@ -60,8 +54,8 @@
         },
         "policy_id": "policy_id",
         "customer_id": {
-          "source": "policy_id",
-          "transformation": "CUST_<policy_id>"
+          "source": "not available",
+          "transformation": null
         },
         "claim_date": "incident_date",
         "incident_date": "incident_date",
@@ -91,16 +85,8 @@
       "reason": "No transaction-level records are present in the source dataset."
     },
     "address": {
-      "status": "derived",
-      "fields": {
-        "address_id": {
-          "source": "incident_city",
-          "transformation": "deterministic derived identifier using prefix ADDR_"
-        },
-        "city": "incident_city",
-        "state": "incident_state"
-      },
-      "note": "This represents incident location, not necessarily the insured's residence."
+      "status": "unavailable",
+      "reason": "The source dataset contains incident_city and incident_state, but does not contain an insured residential address. These fields will remain incident-location attributes rather than being converted into an Address entity."
     },
     "vehicle": {
       "status": "unavailable",

@@ -1,0 +1,201 @@
+{
+  "schema_name": "insurance_fraud_canonical",
+  "schema_version": "1.0.0",
+  "description": "Canonical internal data contract for the Fraud Intelligence Platform.",
+  "entities": {
+    "customer": {
+      "description": "Policy holder or claimant.",
+      "fields": {
+        "customer_id": "string",
+        "name": "string|null",
+        "date_of_birth": "date|null",
+        "phone": "string|null",
+        "email": "string|null",
+        "address_id": "string|null"
+      },
+      "required": [
+        "customer_id"
+      ]
+    },
+    "policy": {
+      "description": "Insurance policy.",
+      "fields": {
+        "policy_id": "string",
+        "customer_id": "string",
+        "policy_type": "string|null",
+        "policy_start_date": "date|null",
+        "policy_end_date": "date|null",
+        "premium": "number|null",
+        "deductible": "number|null",
+        "coverage_amount": "number|null",
+        "status": "string|null"
+      },
+      "required": [
+        "policy_id",
+        "customer_id"
+      ]
+    },
+    "claim": {
+      "description": "Insurance claim.",
+      "fields": {
+        "claim_id": "string",
+        "policy_id": "string",
+        "customer_id": "string",
+        "claim_date": "date|null",
+        "incident_date": "date|null",
+        "claim_type": "string|null",
+        "claim_description": "string|null",
+        "claimed_amount": "number|null",
+        "approved_amount": "number|null",
+        "status": "string|null",
+        "fraud_label": "boolean|null"
+      },
+      "required": [
+        "claim_id",
+        "policy_id",
+        "customer_id"
+      ]
+    },
+    "provider": {
+      "description": "Repair shop, medical provider, contractor, merchant, or other service provider.",
+      "fields": {
+        "provider_id": "string",
+        "provider_type": "string|null",
+        "provider_name": "string|null",
+        "address_id": "string|null"
+      },
+      "required": [
+        "provider_id"
+      ]
+    },
+    "transaction": {
+      "description": "Financial or claim-related transaction.",
+      "fields": {
+        "transaction_id": "string",
+        "customer_id": "string",
+        "claim_id": "string|null",
+        "provider_id": "string|null",
+        "transaction_date": "date|null",
+        "amount": "number|null",
+        "transaction_type": "string|null"
+      },
+      "required": [
+        "transaction_id",
+        "customer_id"
+      ]
+    },
+    "address": {
+      "description": "Reusable geographic entity.",
+      "fields": {
+        "address_id": "string",
+        "street": "string|null",
+        "city": "string|null",
+        "state": "string|null",
+        "postal_code": "string|null",
+        "country": "string|null"
+      },
+      "required": [
+        "address_id"
+      ]
+    },
+    "vehicle": {
+      "description": "Vehicle associated with a customer, policy, or claim.",
+      "fields": {
+        "vehicle_id": "string",
+        "customer_id": "string|null",
+        "policy_id": "string|null",
+        "make": "string|null",
+        "model": "string|null",
+        "year": "integer|null",
+        "registration_id": "string|null"
+      },
+      "required": [
+        "vehicle_id"
+      ]
+    },
+    "document": {
+      "description": "Textual evidence used by the RAG system.",
+      "fields": {
+        "document_id": "string",
+        "claim_id": "string|null",
+        "document_type": "string|null",
+        "title": "string|null",
+        "source": "string|null",
+        "publication_date": "date|null",
+        "text": "string|null",
+        "checksum": "string"
+      },
+      "required": [
+        "document_id",
+        "checksum"
+      ]
+    },
+    "image_evidence": {
+      "description": "Visual evidence associated with a claim.",
+      "fields": {
+        "image_id": "string",
+        "claim_id": "string|null",
+        "image_type": "string|null",
+        "file_path": "string|null",
+        "source": "string|null",
+        "checksum": "string"
+      },
+      "required": [
+        "image_id",
+        "checksum"
+      ]
+    }
+  },
+  "relationships": [
+    {
+      "from": "customer",
+      "relationship": "OWNS",
+      "to": "policy"
+    },
+    {
+      "from": "customer",
+      "relationship": "MADE",
+      "to": "claim"
+    },
+    {
+      "from": "customer",
+      "relationship": "LIVES_AT",
+      "to": "address"
+    },
+    {
+      "from": "customer",
+      "relationship": "OWNS",
+      "to": "vehicle"
+    },
+    {
+      "from": "policy",
+      "relationship": "HAS_CLAIM",
+      "to": "claim"
+    },
+    {
+      "from": "claim",
+      "relationship": "USES",
+      "to": "provider"
+    },
+    {
+      "from": "claim",
+      "relationship": "HAS_TRANSACTION",
+      "to": "transaction"
+    },
+    {
+      "from": "claim",
+      "relationship": "HAS_DOCUMENT",
+      "to": "document"
+    },
+    {
+      "from": "claim",
+      "relationship": "HAS_IMAGE",
+      "to": "image_evidence"
+    },
+    {
+      "from": "provider",
+      "relationship": "LOCATED_AT",
+      "to": "address"
+    }
+  ]
+}

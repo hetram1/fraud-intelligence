@@ -1,0 +1,164 @@
+{
+  "dataset_name": "Car Insurance Fraud Detection Dataset",
+  "dataset_id": "ahluwaliasaksham/car-insurance-fraud-detection-dataset",
+  "source_file": "data/raw/car_insurance_fraud_dataset.csv",
+  "version": "initial-development",
+  "target_column": {
+    "source": "fraud_reported",
+    "canonical": "claim.fraud_label",
+    "transformation": "Y -> true, N -> false"
+  },
+  "entities": {
+    "customer": {
+      "status": "derived",
+      "fields": {
+        "customer_id": {
+          "source": "policy_id",
+          "transformation": "deterministic derived identifier using prefix CUST_",
+          "note": "The source dataset does not contain an explicit customer identifier."
+        }
+      }
+    },
+    "policy": {
+      "status": "direct",
+      "fields": {
+        "policy_id": "policy_id",
+        "policy_type": {
+          "source": "not available",
+          "transformation": null
+        },
+        "policy_start_date": {
+          "source": "not available",
+          "transformation": null
+        },
+        "policy_end_date": {
+          "source": "not available",
+          "transformation": null
+        },
+        "premium": "policy_annual_premium",
+        "deductible": "policy_deductible",
+        "coverage_amount": {
+          "source": "not available",
+          "transformation": null
+        },
+        "status": {
+          "source": "not available",
+          "transformation": null
+        },
+        "customer_id": {
+          "source": "policy_id",
+          "transformation": "CUST_<policy_id>"
+        }
+      }
+    },
+    "claim": {
+      "status": "derived",
+      "fields": {
+        "claim_id": {
+          "source": "policy_id",
+          "transformation": "deterministic identifier using prefix CLM_"
+        },
+        "policy_id": "policy_id",
+        "customer_id": {
+          "source": "policy_id",
+          "transformation": "CUST_<policy_id>"
+        },
+        "claim_date": "incident_date",
+        "incident_date": "incident_date",
+        "claim_type": "incident_type",
+        "claim_description": {
+          "source": "not available",
+          "transformation": null
+        },
+        "claimed_amount": "claim_amount",
+        "approved_amount": {
+          "source": "not available",
+          "transformation": null
+        },
+        "status": {
+          "source": "not available",
+          "transformation": null
+        },
+        "fraud_label": "fraud_reported"
+      }
+    },
+    "provider": {
+      "status": "unavailable",
+      "reason": "No provider identifier or provider attributes are present in the source dataset."
+    },
+    "transaction": {
+      "status": "unavailable",
+      "reason": "No transaction-level records are present in the source dataset."
+    },
+    "address": {
+      "status": "derived",
+      "fields": {
+        "address_id": {
+          "source": "incident_city",
+          "transformation": "deterministic derived identifier using prefix ADDR_"
+        },
+        "city": "incident_city",
+        "state": "incident_state"
+      },
+      "note": "This represents incident location, not necessarily the insured's residence."
+    },
+    "vehicle": {
+      "status": "unavailable",
+      "reason": "The dataset contains incident vehicle counts but no vehicle-level identifier."
+    },
+    "document": {
+      "status": "unavailable",
+      "reason": "No document records are present in the source dataset."
+    },
+    "image_evidence": {
+      "status": "unavailable",
+      "reason": "No image records are present in the source dataset."
+    }
+  },
+  "source_features": {
+    "categorical": [
+      "policy_state",
+      "insured_sex",
+      "insured_education_level",
+      "insured_occupation",
+      "insured_hobbies",
+      "incident_type",
+      "collision_type",
+      "incident_severity",
+      "authorities_contacted",
+      "incident_state",
+      "incident_city",
+      "police_report_available"
+    ],
+    "numeric": [
+      "policy_deductible",
+      "policy_annual_premium",
+      "insured_age",
+      "incident_hour_of_the_day",
+      "number_of_vehicles_involved",
+      "bodily_injuries",
+      "witnesses",
+      "claim_amount",
+      "total_claim_amount"
+    ],
+    "date": [
+      "incident_date"
+    ],
+    "identifier": [
+      "policy_id"
+    ]
+  },
+  "data_quality_observations": {
+    "row_count": 30000,
+    "column_count": 24,
+    "duplicate_rows": 0,
+    "duplicate_policy_ids": 0,
+    "missing_columns": {
+      "authorities_contacted": 7564
+    },
+    "fraud_distribution_percent": {
+      "N": 88.53,
+      "Y": 11.47
+    }
+  }
+}

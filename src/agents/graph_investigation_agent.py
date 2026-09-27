@@ -52,6 +52,12 @@ class GraphInvestigationAgent:
 
                     RETURN
                         c.claim_id AS claim_id,
+                        c.incident_date AS incident_date,
+                        c.claim_type AS claim_type,
+                        c.claimed_amount AS claimed_amount,
+                        c.total_claim_amount AS total_claim_amount,
+                        c.police_report_available
+                            AS police_report_available,
 
                         p.policy_id AS policy_id,
                         p.premium AS policy_premium,
@@ -90,6 +96,24 @@ class GraphInvestigationAgent:
 
                 return {
                     "claim_id": record["claim_id"],
+                    "claim": {
+                        "claim_id": record["claim_id"],
+                        "incident_date": record[
+                            "incident_date"
+                        ],
+                        "claim_type": record[
+                            "claim_type"
+                        ],
+                        "claimed_amount": record[
+                            "claimed_amount"
+                        ],
+                        "total_claim_amount": record[
+                            "total_claim_amount"
+                        ],
+                        "police_report_available": record[
+                            "police_report_available"
+                        ],
+                    },
                     "policy": {
                         "policy_id": record["policy_id"],
                         "premium": record[

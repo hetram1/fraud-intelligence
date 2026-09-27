@@ -1,0 +1,16 @@
+.venv
+.git
+.gitignore
+.env
+__pycache__
+*.pyc
+.pytest_cache
+data/raw
+data/processed
+data/external
+data/rag/chunks
+outputs
+logs
+notebooks
+tests
+*.ipynb

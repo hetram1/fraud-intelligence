@@ -1,0 +1,27 @@
+FROM python:3.14-slim
+
+WORKDIR /app
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
+
+COPY requirements-core.txt requirements-core.txt
+COPY requirements-graph.txt requirements-graph.txt
+COPY requirements-rag.txt requirements-rag.txt
+COPY requirements-llm.txt requirements-llm.txt
+COPY requirements-api.txt requirements-api.txt
+
+RUN pip install --no-cache-dir \
+    -r requirements-core.txt \
+    -r requirements-graph.txt \
+    -r requirements-rag.txt \
+    -r requirements-llm.txt \
+    -r requirements-api.txt
+
+COPY configs ./configs
+COPY docs ./docs
+COPY src ./src
+
+EXPOSE 8000
+
+CMD ["uvicorn", "src.api.app:app", "--host", "0.0.0.0", "--port", "8000"]

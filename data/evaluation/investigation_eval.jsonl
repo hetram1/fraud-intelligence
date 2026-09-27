@@ -1,0 +1,6 @@
+{"case_id":"eval_001","question":"What is the fraud risk score for claim CLM_POL100000?","claim_id":"CLM_POL100000","expected_route":"fraud","expected_evidence":["fraud_score"]}
+{"case_id":"eval_002","question":"Which claims are related to CLM_POL100000 through the same incident location?","claim_id":"CLM_POL100000","expected_route":"graph","expected_evidence":["graph_evidence"]}
+{"case_id":"eval_003","question":"What is the standard procedure for reviewing a suspicious insurance claim?","claim_id":"CLM_POL100000","expected_route":"rag","expected_evidence":["rag_evidence"]}
+{"case_id":"eval_004","question":"Investigate claim CLM_POL100000 using the available model, graph, and document evidence.","claim_id":"CLM_POL100000","expected_route":"investigation","expected_evidence":["fraud_score","graph_evidence","rag_evidence"]}
+{"case_id":"eval_005","question":"Does the graph show any other claims sharing the incident location with CLM_POL100000?","claim_id":"CLM_POL100000","expected_route":"graph","expected_evidence":["graph_evidence"]}
+{"case_id":"eval_006","question":"What is the standard procedure and guidance for reviewing evidence in a suspicious claim?","claim_id":"CLM_POL100000","expected_route":"rag","expected_evidence":["rag_evidence"]}

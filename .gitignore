@@ -64,3 +64,6 @@ htmlcov/
 *.db
 *.sqlite
 *.sqlite3
+
+# Generated RAG artifacts
+data/rag/chunks/*

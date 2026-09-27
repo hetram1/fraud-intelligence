@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import time
 from pathlib import Path
 from typing import Any
 
@@ -106,18 +107,52 @@ class LLMReportAgent:
             evidence
         )
 
+        start_time = time.perf_counter()
+
         response = self.client.models.generate_content(
             model=self.model_name,
             contents=prompt,
         )
+
+        latency_ms = (
+            time.perf_counter() - start_time
+        ) * 1000
 
         content = response.text
 
         if not isinstance(content, str):
             content = str(content)
 
+        usage = getattr(
+            response,
+            "usage_metadata",
+            None,
+        )
+
+        usage_metadata = {}
+
+        if usage is not None:
+            for field in (
+                "prompt_token_count",
+                "candidates_token_count",
+                "total_token_count",
+            ):
+                value = getattr(
+                    usage,
+                    field,
+                    None,
+                )
+
+                if value is not None:
+                    usage_metadata[field] = value
+
         return {
             "model": self.model_name,
+            "latency_ms": round(
+                latency_ms,
+                2,
+            ),
+            "usage": usage_metadata,
             "report": content,
         }
 

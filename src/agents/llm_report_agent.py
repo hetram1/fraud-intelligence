@@ -7,7 +7,8 @@ from pathlib import Path
 from typing import Any
 
 from dotenv import load_dotenv
-from langchain_openai import ChatOpenAI
+from google import genai
+from google.genai import types
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -51,26 +52,24 @@ class LLMReportAgent:
         model: str | None = None,
     ) -> None:
 
-        api_key = os.getenv("OPENAI_API_KEY")
+        api_key = os.getenv("GEMINI_API_KEY")
         selected_model = (
             model
-            or os.getenv("OPENAI_MODEL")
+            or os.getenv("GEMINI_MODEL")
         )
 
         if not api_key:
             raise RuntimeError(
-                "OPENAI_API_KEY is not configured in .env"
+                "GEMINI_API_KEY is not configured in .env"
             )
 
         if not selected_model:
             raise RuntimeError(
-                "OPENAI_MODEL is not configured in .env"
+                "GEMINI_MODEL is not configured in .env"
             )
 
-        self.llm = ChatOpenAI(
-            model=selected_model,
-            temperature=0,
-            api_key=api_key,
+        self.client = genai.Client(
+            api_key=api_key
         )
 
         self.model_name = selected_model
@@ -107,11 +106,12 @@ class LLMReportAgent:
             evidence
         )
 
-        response = self.llm.invoke(
-            prompt
+        response = self.client.models.generate_content(
+            model=self.model_name,
+            contents=prompt,
         )
 
-        content = response.content
+        content = response.text
 
         if not isinstance(content, str):
             content = str(content)
@@ -222,11 +222,11 @@ def main() -> None:
         return
 
     configured = {
-        "OPENAI_API_KEY": bool(
-            os.getenv("OPENAI_API_KEY")
+        "GEMINI_API_KEY": bool(
+            os.getenv("GEMINI_API_KEY")
         ),
-        "OPENAI_MODEL": bool(
-            os.getenv("OPENAI_MODEL")
+        "GEMINI_MODEL": bool(
+            os.getenv("GEMINI_MODEL")
         ),
     }
 
